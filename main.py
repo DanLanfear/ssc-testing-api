@@ -43,9 +43,10 @@ class Test(Resource):
     def post(self):
         try:
             id = request.json['id']
+            print(request.json)
             test_ref.document(id).set(request.json)
             print(request.json)
-            return request.json, 200
+            return {"success": True}, 200
         except Exception as e:
             return f"An Error Occured: {e}"
 
@@ -54,7 +55,7 @@ class Test(Resource):
             # Check for ID in URL query
             test_id = request.args.get('id')
             test_ref.document(test_id).delete()
-            return jsonify({"success": True}), 200
+            return {"success": True}, 200
         except Exception as e:
             return f"An Error Occured: {e}"
 
