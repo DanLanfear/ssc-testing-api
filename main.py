@@ -15,6 +15,7 @@ db = firestore.client()
 test_ref = db.collection('tests')
 
 resource_fields = {
+    'id': fields.Integer,
     'name': fields.String,
     'start': fields.String,
     'end': fields.String
