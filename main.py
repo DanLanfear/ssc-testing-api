@@ -67,4 +67,4 @@ class Tests(Resource):
 api.add_resource(Tests, '/tests')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=8080)
