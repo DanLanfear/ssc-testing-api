@@ -10,8 +10,8 @@ app = Flask(__name__)
 api = Api(app)
 
 # Initializing Firestore Database
-key = os.environ.get('firebase-key-ssc')
-cred = credentials.Certificate(key)
+# key = os.environ.get('firebase-key-ssc')
+cred = credentials.Certificate('db-key')
 default_app = initialize_app(cred)
 db = firestore.client()
 test_ref = db.collection('tests')
