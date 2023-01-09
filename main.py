@@ -21,6 +21,8 @@ resource_fields = {
     'end': fields.String
 }
 
+# Test resource
+
 
 class Tests(Resource):
     @marshal_with(resource_fields)
