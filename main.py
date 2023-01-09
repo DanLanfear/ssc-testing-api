@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, Api, fields, marshal_with
 from firebase_admin import credentials, firestore, initialize_app
 from model import Test
+import os
 
 # creating the flask app
 app = Flask(__name__)
@@ -67,4 +68,5 @@ class Tests(Resource):
 api.add_resource(Tests, '/tests')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    server_port = os.environ.get('PORT', '8080')
+    app.run(debug=True, port=server_port, host='0.0.0.0')
