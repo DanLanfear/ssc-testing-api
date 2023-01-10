@@ -41,9 +41,9 @@ class Tests(Resource):
             return f"An Error Occured: {e}"
 
     def options(self):
-        return 201, {'Access-Control-Allow-Origin': '*',
-                     'Access-Control-Allow-Methods': 'POST,GET,DELETE',
-                     'Access-Control-Allow-Headers': '*'}
+        return {'success': True}, 200, {'Access-Control-Allow-Origin': '*',
+                                        'Access-Control-Allow-Methods': 'POST, GET, DELETE',
+                                        'Access-Control-Allow-Headers': '*'}
 
     def post(self):
         try:
@@ -51,7 +51,7 @@ class Tests(Resource):
             print(request.json)
             test_ref.document(id).set(request.json)
             print(request.json)
-            return {"success": True}, 200, {'Access-Control-Allow-Origin': '*'}
+            return {'success': True}, 201, {'Access-Control-Allow-Origin': '*'}
         except Exception as e:
             return f"An Error Occured: {e}"
 
