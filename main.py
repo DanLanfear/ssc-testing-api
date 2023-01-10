@@ -6,11 +6,13 @@ import os
 
 # creating the flask app
 app = Flask(__name__)
+
 # creating an API object
 api = Api(app)
-key_path = os.environ.get('firebase-key/latest-key')
-# Initializing Firestore Database
+cloud = os.environ.get('cloud')
+key_path = 'firebase-key/latest-key' if cloud else 'db_key.json'
 
+# Initializing Firestore Database
 cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 db = firestore.client()
