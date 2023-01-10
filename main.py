@@ -10,7 +10,7 @@ app = Flask(__name__)
 # creating an API object
 api = Api(app)
 cloud = os.environ.get('cloud')
-key_path = 'firebase-key/latest-key' if cloud else 'db_key.json'
+key_path = '/firebase-key/latest-key' if cloud else 'db_key.json'
 
 # Initializing Firestore Database
 cred = credentials.Certificate(key_path)
