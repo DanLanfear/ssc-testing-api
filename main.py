@@ -60,9 +60,18 @@ class Tests(Resource):
             # Check for ID in URL query
             test_id = request.args.get('id')
             test_ref.document(test_id).delete()
-            return {"success": True}, 200, {'Access-Control-Allow-Origin': '*'}
+            return {"success": True}, 204, {'Access-Control-Allow-Origin': '*'}
         except Exception as e:
             return f"An Error Occured: {e}"
+
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers',
+                             'Content-Type,Authorization')
+        response.headers.add(
+            'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return response
 
 
 api.add_resource(Tests, '/tests')
