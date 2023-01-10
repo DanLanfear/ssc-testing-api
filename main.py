@@ -45,14 +45,14 @@ class Tests(Resource):
                 return test.to_dict(), 200
             else:
                 all_tests = [doc.to_dict() for doc in test_ref.stream()]
-                return all_tests, 200, {'Access-Control-Allow-Origin': '*'}
+                return all_tests, 200,
         except Exception as e:
             return f"An Error Occured: {e}"
 
-    def options(self):
-        return {'success': True}, 200, {'Access-Control-Allow-Origin': '*',
-                                        'Access-Control-Allow-Methods': 'POST, GET, DELETE',
-                                        'Access-Control-Allow-Headers': '*'}
+    # def options(self):
+    #     return {'success': True}, 200, {'Access-Control-Allow-Origin': '*',
+    #                                     'Access-Control-Allow-Methods': 'POST, GET, DELETE',
+    #                                     'Access-Control-Allow-Headers': '*'}
 
     def post(self):
         try:
@@ -60,7 +60,7 @@ class Tests(Resource):
             print(request.json)
             test_ref.document(id).set(request.json)
             print(request.json)
-            return {'success': True}, 201, {'Access-Control-Allow-Origin': '*'}
+            return {'success': True}, 201
         except Exception as e:
             return f"An Error Occured: {e}"
 
@@ -69,7 +69,7 @@ class Tests(Resource):
             # Check for ID in URL query
             test_id = request.args.get('id')
             test_ref.document(test_id).delete()
-            return {"success": True}, 204, {'Access-Control-Allow-Origin': '*'}
+            return {"success": True}, 204
         except Exception as e:
             return f"An Error Occured: {e}"
 
