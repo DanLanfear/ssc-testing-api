@@ -8,9 +8,10 @@ import os
 app = Flask(__name__)
 # creating an API object
 api = Api(app)
-
+key_path = os.environ.get('firebase-key/latest-key', 'db_key.json')
 # Initializing Firestore Database
-cred = credentials.Certificate('/firebase-key/latest-key')
+
+cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 db = firestore.client()
 test_ref = db.collection('tests')
@@ -22,8 +23,6 @@ resource_fields = {
     'end': fields.String
 }
 
-# Test resource
-
 
 @app.after_request
 def after_request(response):
@@ -34,7 +33,7 @@ def after_request(response):
     return response
 
 
-class Tests(Resource):
+class TestList(Resource):
     @marshal_with(resource_fields)
     def get(self):
         try:
@@ -47,35 +46,34 @@ class Tests(Resource):
                 all_tests = [doc.to_dict() for doc in test_ref.stream()]
                 return all_tests, 200,
         except Exception as e:
-            return f"An Error Occured: {e}"
+            return f"An Error Occured: {e}", 400
 
-    # def options(self):
-    #     return {'success': True}, 200, {'Access-Control-Allow-Origin': '*',
-    #                                     'Access-Control-Allow-Methods': 'POST, GET, DELETE',
-    #                                     'Access-Control-Allow-Headers': '*'}
 
-    def post(self):
+class Test(Resource):
+    @marshal_with(resource_fields)
+    def post(self, test_id):
         try:
-            id = request.json['id']
-            print(request.json)
-            test_ref.document(id).set(request.json)
-            print(request.json)
+            # Overwrite entry if it exists, create it otherwise
+            test_ref.document(test_id).set(request.json)
             return {'success': True}, 201
         except Exception as e:
-            return f"An Error Occured: {e}"
+            return f"An Error Occured: {e}", 400
 
-    def delete(self):
+    def delete(self, test_id):
         try:
-            # Check for ID in URL query
-            test_id = request.args.get('id')
+            # Remove the entry with id test_id
             test_ref.document(test_id).delete()
             return {"success": True}, 204
         except Exception as e:
-            return f"An Error Occured: {e}"
+            return f"An Error Occured: {e}", 400
+
+    def put(self, test_id):
+        pass
 
 
-api.add_resource(Tests, '/tests')
+api.add_resource(TestList, '/tests')
+api.add_resource(Test, '/tests/<test_id>')
 
 if __name__ == '__main__':
-    server_port = os.environ.get('PORT', '8080')
+    server_port = os.environ.get('PORT', '5000')
     app.run(debug=True, port=server_port, host='0.0.0.0')
