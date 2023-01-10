@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 # creating an API object
 api = Api(app)
-key_path = os.environ.get('firebase-key/latest-key', 'db_key.json')
+key_path = os.environ.get('firebase-key/latest-key')
 # Initializing Firestore Database
 
 cred = credentials.Certificate(key_path)
