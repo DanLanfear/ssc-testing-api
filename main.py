@@ -25,6 +25,15 @@ resource_fields = {
 # Test resource
 
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers',
+                         'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
+
 class Tests(Resource):
     @marshal_with(resource_fields)
     def get(self):
@@ -63,15 +72,6 @@ class Tests(Resource):
             return {"success": True}, 204, {'Access-Control-Allow-Origin': '*'}
         except Exception as e:
             return f"An Error Occured: {e}"
-
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers',
-                             'Content-Type,Authorization')
-        response.headers.add(
-            'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-        return response
 
 
 api.add_resource(Tests, '/tests')
